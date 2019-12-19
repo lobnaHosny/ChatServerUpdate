@@ -8,12 +8,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 
-@TestInstance(LifeCycle.PER_CLASS)
 class ServerTest {
 
-    public Server server;
+    public static Server server;
     @BeforeAll
-    void runServer(){
+    static void runServer(){
         server = new Server(9000);
     }
 
