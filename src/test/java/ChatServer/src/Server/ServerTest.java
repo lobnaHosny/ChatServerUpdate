@@ -10,10 +10,10 @@ import java.io.IOException;
 
 class ServerTest {
 
-    public volatile Server server;
+    public Server server;
     //@BeforeAll
     @Test
-    volatile void runServer(){
+    void runServer(){
         server = new Server(9000);
     }
 
