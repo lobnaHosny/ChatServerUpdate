@@ -12,10 +12,12 @@ class ServerTest {
 
     public volatile Server server;
     //@BeforeAll
-    @Test
+    //@Test
     void runServer(){
         server = new Server(9000);
     }
+    
+    runServer();
 
     //@AfterEach
     //void quitServer() throws IOException {
