@@ -10,7 +10,7 @@ import java.io.IOException;
 
 class ServerTest {
 
-    public Server server;
+    public volatile Server server;
     //@BeforeAll
     @Test
     void runServer(){
