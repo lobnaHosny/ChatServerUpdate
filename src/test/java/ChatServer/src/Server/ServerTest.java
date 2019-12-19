@@ -11,7 +11,8 @@ import java.io.IOException;
 class ServerTest {
 
     public static Server server;
-    @BeforeAll
+    //@BeforeAll
+    @Test
     static void runServer(){
         server = new Server(9000);
     }
