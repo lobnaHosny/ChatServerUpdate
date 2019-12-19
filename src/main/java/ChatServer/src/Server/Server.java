@@ -36,6 +36,7 @@ public class Server {
 						DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 						c = new Connection(socket,this,dis,dos );
 						Thread t = new Thread(c);
+						Thread.sleep(500);
 
 						t.start();
 						list.add(c);
