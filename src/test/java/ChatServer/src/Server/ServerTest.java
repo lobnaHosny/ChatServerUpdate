@@ -12,7 +12,7 @@ class ServerTest {
 
     public Server server;
     @BeforeAll
-    void runServer(){
+    static void runServer(){
         server = new Server(9000);
     }
 
