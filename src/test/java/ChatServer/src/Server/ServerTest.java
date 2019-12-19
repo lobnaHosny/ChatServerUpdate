@@ -13,7 +13,7 @@ class ServerTest {
     public volatile Server server;
     //@BeforeAll
     @Test
-    volaile void runServer(){
+    volatile void runServer(){
         server = new Server(9000);
     }
 
