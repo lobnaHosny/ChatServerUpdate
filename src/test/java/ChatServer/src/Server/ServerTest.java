@@ -24,8 +24,9 @@ class ServerTest {
     
    @Test
    void anotherOne(){
+       System.out.printf("%d", server.getNumberOfUsers());
        System.out.println("This is another one");
-       System.out.printf("%b", server.c.isRunning());
+       
        //assertTrue(server.c.isRunning());
    }
     @Test
