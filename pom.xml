@@ -58,7 +58,7 @@
                </plugin>
         </plugins>
 	    
-	    <testSourceDirectory> ${project.basedir}/src/test/ChatServer/src/Client </testSourceDirectory>    
+	    <testSourceDirectory> ${project.basedir}/src/test/ </testSourceDirectory>    
     </build>
 
 
