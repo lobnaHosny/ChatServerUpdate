@@ -12,13 +12,12 @@ import java.util.Iterator;
 
 public class Server {
 
-	private ServerSocket server;
+	public ServerSocket server;
 	private Socket socket   = null;
 	private DataInputStream in       =  null;
 	private ArrayList<Connection> list = new ArrayList<Connection>();
 	Connection c;
 	String line = "";
-	ArrayList<String> broadcastMsgList = new ArrayList<String>();
 
 	String bMsg;
 	public Server (int port) {
@@ -26,33 +25,59 @@ public class Server {
 			server = new ServerSocket(port);
 			System.out.println("Server has been initialised on port " + port);
 
-				while (true){
-					socket = server.accept();
-					System.out.println("Client Accepted "+ socket);
+			/*while (true){
+				socket = server.accept();
+				System.out.println("Client Accepted "+ socket);
 
-					try {
-						// obtain input and output streams
-						DataInputStream dis = new DataInputStream(socket.getInputStream());
-						DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-						c = new Connection(socket,this,dis,dos );
-						Thread t = new Thread(c);
-						//Thread.sleep(50);
+				try {
+					// obtain input and output streams
+					DataInputStream dis = new DataInputStream(socket.getInputStream());
+					DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+					c = new Connection(socket,this,dis,dos );
+					Thread t = new Thread(c);
 
-						t.start();
-						list.add(c);
-					} catch (IOException e) {
+					t.start();
+					list.add(c);
+				} catch (IOException e) {
 
-						e.printStackTrace();
-					}
-
+					e.printStackTrace();
 				}
 
+			}
+*/
 		}
 		catch (Exception e) {
 			System.err.println("error initialising server");
 
 		}
 
+
+	}
+
+	public void listenClient(){
+		while (true){
+			try {
+				socket = server.accept();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Client Accepted "+ socket);
+
+			try {
+				// obtain input and output streams
+				DataInputStream dis = new DataInputStream(socket.getInputStream());
+				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+				c = new Connection(socket,this,dis,dos );
+				Thread t = new Thread(c);
+
+				t.start();
+				list.add(c);
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 
@@ -66,7 +91,7 @@ public class Server {
 		}
 		return userList;
 	}
-	
+
 	public boolean doesUserExist(String newUser) {
 		//boolean result = false;
 		for( Connection clientThread: list){
@@ -82,33 +107,29 @@ public class Server {
 
 	public void broadcastMessage(String theMessage){
 		//System.out.println(theMessage);
-		bMsg = new String();
-		broadcastMsgList.add(theMessage);
-		for(String msg : broadcastMsgList){
-			bMsg += msg + "\n";
 
-		}
-		System.out.println(bMsg);
 		for( Connection clientThread: list){
 			if(clientThread.getState() == Connection.STATE_REGISTERED){
 
-				clientThread.messageForConnection(bMsg + System.lineSeparator());
+				clientThread.messageForConnection(theMessage + System.lineSeparator());
 			}
 		}
 	}
-	
+
 	public boolean sendPrivateMessage(String message, String user) {
 		for( Connection clientThread: list) {
 			if(clientThread.getState() == Connection.STATE_REGISTERED) {
-				if(clientThread.getUserName().compareTo(user)==0) {
-					clientThread.messageForConnection(message + System.lineSeparator());
+
+				if(clientThread.getUserName().equals(user)) {
+					clientThread.sendOverConnection(message);
 					return true;
 				}
 			}
+
 		}
 		return false;
 	}
-	
+
 	public void removeDeadUsers(){
 		Iterator<Connection> it = list.iterator();
 		while (it.hasNext()) {
@@ -117,7 +138,7 @@ public class Server {
 				it.remove();
 		}
 	}
-	
+
 	public int getNumberOfUsers() {
 		int counter = 0;
 		for( Connection clientThread: list){
@@ -134,5 +155,5 @@ public class Server {
 	protected void finalize() throws IOException{
 		server.close();
 	}
-		
+
 }
