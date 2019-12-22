@@ -7,8 +7,11 @@ public class Runner
 	final static int PORT = 8080;
 	
 	public static void main(String[] args){
+
 		server = new Server(PORT);
+		server.listenClient();
 	}
 	
 	
 }
+
